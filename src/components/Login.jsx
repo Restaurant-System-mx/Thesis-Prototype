@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+import {
+    fetchWithCsrf
+} from "../services/csrf";
+
 function Login({ onLogin }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -14,7 +18,9 @@ function Login({ onLogin }) {
         setLoading(true);
 
         try {
-            const response = await fetch("http://localhost:3000/api/auth/login", {
+            const response = await fetchWithCsrf(
+                "http://localhost:3000/api/auth/login",
+                {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -31,9 +37,6 @@ function Login({ onLogin }) {
                 setError(data.message || "Invalid username or password");
                 return;
             }
-
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
 
             onLogin(data.user);
 

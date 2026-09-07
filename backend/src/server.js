@@ -1,22 +1,44 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const helmet = require("helmet");
 require("dotenv").config();
-const authenticateToken = require("./middleware/auth.middleware");
-const authRoutes = require("./routes/auth.routes");
+
 const pool = require("./config/database");
+const authRoutes = require("./routes/auth.routes");
+const authenticateToken = require("./middleware/auth.middleware");
+
+const {
+    apiRateLimiter
+} = require("./middleware/rate-limit.middleware");
+
+const {
+    notFoundHandler,
+    errorHandler
+} = require("./middleware/error.middleware");
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
-app.use("/api/auth", authRoutes);
+app.disable("x-powered-by");
 
-app.get("/api/protected", authenticateToken, (req, res) => {
-    res.json({
-        message: "You have access to this protected route",
-        user: req.user
-    });
-});
+app.use(helmet());
+
+app.use(
+    cors({
+        origin: process.env.FRONTEND_URL,
+        credentials: true
+    })
+);
+
+app.use(
+    express.json({
+        limit: "10kb"
+    })
+);
+
+app.use(cookieParser());
+
+app.use("/api", apiRateLimiter);
 
 app.get("/", (req, res) => {
     res.json({
@@ -43,37 +65,21 @@ app.get("/api/health", async (req, res) => {
     }
 });
 
-app.get("/api/users", async (req, res) => {
-    try {
-        const result = await pool.query(`
-            SELECT
-                user_id,
-                username,
-                first_name,
-                last_name,
-                email,
-                role,
-                is_active,
-                created_at,
-                phone,
-                address
-            FROM users
-            ORDER BY user_id;
-        `);
+app.use("/api/auth", authRoutes);
 
-        res.json(result.rows);
-    } catch (error) {
-        console.error("Error fetching users:", error);
-
-        res.status(500).json({
-            message: "Error fetching users"
-        });
-    }
+app.get("/api/protected", authenticateToken, (req, res) => {
+    res.json({
+        message: "You have access to this protected route",
+        user: req.user
+    });
 });
+
+app.use(notFoundHandler);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
-
