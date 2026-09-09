@@ -1,23 +1,23 @@
 import { useState } from 'react'
 
-function ModalEspecificaciones({ onClose, especificaciones, onGuardar }) {
-  const [nueva, setNueva] = useState('')
+function ModalSpecifications({ onClose, specifications, onSave }) {
+  const [newSpec, setNewSpec] = useState('')
 
-  function handleAgregar() {
-    if (!nueva.trim()) {
-      alert('Por favor escribe una especificación')
+  function handleAdd() {
+    if (!newSpec.trim()) {
+      alert('Please enter a specification')
       return
     }
-    if (especificaciones.find(e => e.nombre.toLowerCase() === nueva.toLowerCase())) {
-      alert('Esa especificación ya existe')
+    if (specifications.find(s => s.name.toLowerCase() === newSpec.toLowerCase())) {
+      alert('This specification already exists')
       return
     }
-    onGuardar({ id: Date.now(), nombre: nueva.trim() })
-    setNueva('')
+    onSave({ id: Date.now(), name: newSpec.trim() })
+    setNewSpec('')
   }
 
   function handleKeyDown(e) {
-    if (e.key === 'Enter') handleAgregar()
+    if (e.key === 'Enter') handleAdd()
   }
 
   return (
@@ -27,56 +27,56 @@ function ModalEspecificaciones({ onClose, especificaciones, onGuardar }) {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-bold text-gray-800">Especificaciones</h2>
-            <p className="text-xs text-gray-400">Agrega opciones como: Sin huevo, Sin picante...</p>
+            <h2 className="text-lg font-bold text-gray-800">Specifications</h2>
+            <p className="text-xs text-gray-400">Add options like: No egg, No spicy...</p>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
         </div>
 
-        {/* Input para agregar */}
+        {/* Input */}
         <div className="flex gap-2 mb-4">
           <input
             type="text"
-            placeholder="Ej. Sin cebolla, Sin gluten..."
-            value={nueva}
-            onChange={(e) => setNueva(e.target.value)}
+            placeholder="e.g. No onion, Gluten free..."
+            value={newSpec}
+            onChange={(e) => setNewSpec(e.target.value)}
             onKeyDown={handleKeyDown}
             className="flex-1 px-4 py-2 border border-border-input rounded-lg text-sm text-gray-700 focus:outline-none focus:border-primary"
           />
           <button
-            onClick={handleAgregar}
+            onClick={handleAdd}
             className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-hover"
           >
-            + Agregar
+            + Add
           </button>
         </div>
 
-        {/* Lista de especificaciones */}
+        {/* Specifications list */}
         <div className="max-h-48 overflow-y-auto mb-6">
-          {especificaciones.length === 0 ? (
+          {specifications.length === 0 ? (
             <p className="text-sm text-gray-400 text-center py-4">
-              No hay especificaciones aún
+              No specifications yet
             </p>
           ) : (
             <div className="flex flex-wrap gap-2">
-              {especificaciones.map(esp => (
+              {specifications.map(spec => (
                 <span
-                  key={esp.id}
+                  key={spec.id}
                   className="flex items-center gap-1 px-3 py-1 bg-primary-light text-primary text-sm rounded-full"
                 >
-                  {esp.nombre}
+                  {spec.name}
                 </span>
               ))}
             </div>
           )}
         </div>
 
-        {/* Botón cerrar */}
+        {/* Close button */}
         <button
           onClick={onClose}
           className="w-full py-2 border border-border-input rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50"
         >
-          Listo
+          Done
         </button>
 
       </div>
@@ -84,4 +84,4 @@ function ModalEspecificaciones({ onClose, especificaciones, onGuardar }) {
   )
 }
 
-export default ModalEspecificaciones
+export default ModalSpecifications

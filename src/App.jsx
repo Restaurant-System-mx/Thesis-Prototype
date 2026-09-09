@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
-import CartaPage from './pages/carta/CartaPage'
+import MenuPage from './pages/carta/MenuPage'
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <Routes>
         <Route path="/" element={
           <Layout>
-            <CartaPage />
+            <MenuPage />
           </Layout>
         } />
       </Routes>

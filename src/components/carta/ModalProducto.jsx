@@ -1,71 +1,71 @@
 import { useState, useEffect } from 'react'
 
-function ModalProducto({ onClose, onGuardar, categorias, especificaciones, productoEditar }) {
-  const [nombre, setNombre] = useState('')
-  const [categoriaId, setCategoriaId] = useState('')
-  const [costoUnitario, setCostoUnitario] = useState('')
-  const [costoVenta, setCostoVenta] = useState('')
-  const [insumos, setInsumos] = useState('')
-  const [especificacionesSeleccionadas, setEspecificacionesSeleccionadas] = useState([])
-  const [activo, setActivo] = useState(true)
-  const [foto, setFoto] = useState(null)
-  const [fotoPreview, setFotoPreview] = useState(null)
-  const [descripcion, setDescripcion] = useState('')
+function ModalProduct({ onClose, onSave, categories, specifications, productToEdit }) {
+  const [name, setName] = useState('')
+  const [categoryId, setCategoryId] = useState('')
+  const [unitCost, setUnitCost] = useState('')
+  const [salePrice, setSalePrice] = useState('')
+  const [supplies, setSupplies] = useState('')
+  const [selectedSpecs, setSelectedSpecs] = useState([])
+  const [active, setActive] = useState(true)
+  const [photo, setPhoto] = useState(null)
+  const [photoPreview, setPhotoPreview] = useState(null)
+  const [description, setDescription] = useState('')
 
   useEffect(() => {
-    if (productoEditar) {
-      setNombre(productoEditar.nombre)
-      setCategoriaId(productoEditar.categoriaId)
-      setCostoUnitario(productoEditar.costoUnitario)
-      setCostoVenta(productoEditar.costoVenta)
-      setInsumos(productoEditar.insumos)
-      setEspecificacionesSeleccionadas(productoEditar.especificaciones)
-      setActivo(productoEditar.activo)
-      setFotoPreview(productoEditar.foto)
-      setDescripcion(productoEditar.descripcion)
+    if (productToEdit) {
+      setName(productToEdit.name)
+      setCategoryId(productToEdit.categoryId)
+      setUnitCost(productToEdit.unitCost)
+      setSalePrice(productToEdit.salePrice)
+      setSupplies(productToEdit.supplies)
+      setSelectedSpecs(productToEdit.specifications)
+      setActive(productToEdit.active)
+      setPhotoPreview(productToEdit.photo)
+      setDescription(productToEdit.description)
     }
-  }, [productoEditar])
+  }, [productToEdit])
 
-  function handleFoto(e) {
-    const archivo = e.target.files[0]
-    if (archivo) {
-      setFoto(archivo)
-      setFotoPreview(URL.createObjectURL(archivo))
+  function handlePhoto(e) {
+    const file = e.target.files[0]
+    if (file) {
+      setPhoto(file)
+      setPhotoPreview(URL.createObjectURL(file))
     }
   }
 
-  function toggleEspecificacion(esp) {
-    if (especificacionesSeleccionadas.find(e => e.id === esp.id)) {
-      setEspecificacionesSeleccionadas(especificacionesSeleccionadas.filter(e => e.id !== esp.id))
+  function toggleSpec(spec) {
+    if (selectedSpecs.find(s => s.id === spec.id)) {
+      setSelectedSpecs(selectedSpecs.filter(s => s.id !== spec.id))
     } else {
-      setEspecificacionesSeleccionadas([...especificacionesSeleccionadas, esp])
+      setSelectedSpecs([...selectedSpecs, spec])
     }
   }
 
-  function handleGuardar() {
-    if (!nombre.trim()) {
-      alert('El nombre es obligatorio')
+  function handleSave() {
+    if (!name.trim()) {
+      alert('Product name is required')
       return
     }
-    if (!categoriaId) {
-      alert('Selecciona una categoría')
+    if (!categoryId) {
+      alert('Please select a category')
       return
     }
-    if (!costoVenta) {
-      alert('El costo de venta es obligatorio')
+    if (!salePrice) {
+      alert('Sale price is required')
       return
     }
-    onGuardar({
-      id: productoEditar ? productoEditar.id : Date.now(),
-      nombre,
-      categoriaId,
-      costoUnitario,
-      costoVenta,
-      insumos,
-      especificaciones: especificacionesSeleccionadas,
-      activo,
-      foto: fotoPreview,
-      descripcion,
+    onSave({
+      id: productToEdit ? productToEdit.id : Date.now(),
+      name,
+      categoryId,
+      unitCost,
+      salePrice,
+      supplies,
+      specifications: selectedSpecs,
+      active,
+      photo: photoPreview,
+      description,
     })
     onClose()
   }
@@ -78,158 +78,158 @@ function ModalProducto({ onClose, onGuardar, categorias, especificaciones, produ
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-lg font-bold text-gray-800">
-              {productoEditar ? 'Editar Producto' : 'Nuevo Producto'}
+              {productToEdit ? 'Edit Product' : 'New Product'}
             </h2>
             <p className="text-xs text-gray-400">
-              {productoEditar ? 'Modifica los datos del platillo' : 'Agrega un platillo al menú'}
+              {productToEdit ? 'Update the dish details' : 'Add a new dish to the menu'}
             </p>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
         </div>
 
-        {/* Foto */}
+        {/* Photo */}
         <div className="mb-4 flex flex-col items-center">
           <div
             className="w-24 h-24 rounded-xl border-2 border-dashed border-border-input flex items-center justify-center overflow-hidden mb-2 cursor-pointer hover:border-primary"
-            onClick={() => document.getElementById('inputFoto').click()}
+            onClick={() => document.getElementById('photoInput').click()}
           >
-            {fotoPreview ? (
-              <img src={fotoPreview} alt="preview" className="w-full h-full object-cover" />
+            {photoPreview ? (
+              <img src={photoPreview} alt="preview" className="w-full h-full object-cover" />
             ) : (
               <div className="flex flex-col items-center text-gray-400">
                 <span className="text-2xl">📷</span>
-                <span className="text-xs mt-1">Subir foto</span>
+                <span className="text-xs mt-1">Upload photo</span>
               </div>
             )}
           </div>
-          <input id="inputFoto" type="file" accept="image/*" className="hidden" onChange={handleFoto} />
+          <input id="photoInput" type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
         </div>
 
-        {/* Nombre */}
+        {/* Name */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nombre del producto</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Product name</label>
           <input
             type="text"
-            placeholder="Ej. Tacos de bistec..."
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            placeholder="e.g. Beef tacos..."
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="w-full px-4 py-2 border border-border-input rounded-lg text-sm text-gray-700 focus:outline-none focus:border-primary"
           />
         </div>
 
-        {/* Categoría */}
+        {/* Category */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
           <select
-            value={categoriaId}
-            onChange={(e) => setCategoriaId(e.target.value)}
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
             className="w-full px-4 py-2 border border-border-input rounded-lg text-sm text-gray-700 focus:outline-none focus:border-primary"
           >
-            <option value="">Selecciona una categoría</option>
-            {categorias.map(cat => (
+            <option value="">Select a category</option>
+            {categories.map(cat => (
               <option key={cat.id} value={cat.id}>
-                {cat.nombre} — {cat.turno}
+                {cat.name} — {cat.shift}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Costos */}
+        {/* Costs */}
         <div className="flex gap-3 mb-4">
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Costo unitario</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Unit cost</label>
             <input
               type="number"
               placeholder="$ 0.00"
-              value={costoUnitario}
-              onChange={(e) => setCostoUnitario(e.target.value)}
+              value={unitCost}
+              onChange={(e) => setUnitCost(e.target.value)}
               className="w-full px-4 py-2 border border-border-input rounded-lg text-sm text-gray-700 focus:outline-none focus:border-primary"
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Costo de venta</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Sale price</label>
             <input
               type="number"
               placeholder="$ 0.00"
-              value={costoVenta}
-              onChange={(e) => setCostoVenta(e.target.value)}
+              value={salePrice}
+              onChange={(e) => setSalePrice(e.target.value)}
               className="w-full px-4 py-2 border border-border-input rounded-lg text-sm text-gray-700 focus:outline-none focus:border-primary"
             />
           </div>
         </div>
 
-        {/* Insumos */}
+        {/* Supplies */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Insumos</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Supplies</label>
           <input
             type="text"
-            placeholder="Ej. Tortilla, carne, cebolla..."
-            value={insumos}
-            onChange={(e) => setInsumos(e.target.value)}
+            placeholder="e.g. Tortilla, beef, onion..."
+            value={supplies}
+            onChange={(e) => setSupplies(e.target.value)}
             className="w-full px-4 py-2 border border-border-input rounded-lg text-sm text-gray-700 focus:outline-none focus:border-primary"
           />
         </div>
 
-        {/* Descripción */}
+        {/* Description */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
           <textarea
-            placeholder="Describe el platillo..."
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
+            placeholder="Describe the dish..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             rows={3}
             className="w-full px-4 py-2 border border-border-input rounded-lg text-sm text-gray-700 focus:outline-none focus:border-primary resize-none"
           />
         </div>
 
-        {/* Especificaciones */}
+        {/* Specifications */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Especificaciones</label>
-          {especificaciones.length === 0 ? (
-            <p className="text-xs text-gray-400">No hay especificaciones. Agrégalas primero.</p>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Specifications</label>
+          {specifications.length === 0 ? (
+            <p className="text-xs text-gray-400">No specifications available. Add them first.</p>
           ) : (
             <div className="flex flex-wrap gap-2">
-              {especificaciones.map(esp => (
+              {specifications.map(spec => (
                 <button
-                  key={esp.id}
-                  onClick={() => toggleEspecificacion(esp)}
+                  key={spec.id}
+                  onClick={() => toggleSpec(spec)}
                   className={`px-3 py-1 rounded-full text-sm border transition-all ${
-                    especificacionesSeleccionadas.find(e => e.id === esp.id)
+                    selectedSpecs.find(s => s.id === spec.id)
                       ? 'bg-primary text-white border-primary'
                       : 'bg-white text-gray-600 border-border-input hover:border-primary'
                   }`}
                 >
-                  {esp.nombre}
+                  {spec.name}
                 </button>
               ))}
             </div>
           )}
         </div>
 
-        {/* Activo */}
+        {/* Active toggle */}
         <div className="mb-6 flex items-center justify-between">
-          <label className="text-sm font-medium text-gray-700">Producto activo</label>
+          <label className="text-sm font-medium text-gray-700">Active product</label>
           <button
-            onClick={() => setActivo(!activo)}
-            className={`w-12 h-6 rounded-full transition-all ${activo ? 'bg-primary' : 'bg-gray-300'}`}
+            onClick={() => setActive(!active)}
+            className={`w-12 h-6 rounded-full transition-all ${active ? 'bg-primary' : 'bg-gray-300'}`}
           >
-            <div className={`w-5 h-5 bg-white rounded-full shadow transition-all mx-0.5 ${activo ? 'translate-x-6' : 'translate-x-0'}`} />
+            <div className={`w-5 h-5 bg-white rounded-full shadow transition-all mx-0.5 ${active ? 'translate-x-6' : 'translate-x-0'}`} />
           </button>
         </div>
 
-        {/* Botones */}
+        {/* Buttons */}
         <div className="flex gap-3">
           <button
             onClick={onClose}
             className="flex-1 py-2 border border-border-input rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50"
           >
-            Cancelar
+            Cancel
           </button>
           <button
-            onClick={handleGuardar}
+            onClick={handleSave}
             className="flex-1 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-hover"
           >
-            {productoEditar ? 'Guardar cambios' : 'Guardar producto'}
+            {productToEdit ? 'Save changes' : 'Save product'}
           </button>
         </div>
 
@@ -238,4 +238,4 @@ function ModalProducto({ onClose, onGuardar, categorias, especificaciones, produ
   )
 }
 
-export default ModalProducto
+export default ModalProduct

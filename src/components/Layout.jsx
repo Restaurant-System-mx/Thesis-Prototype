@@ -1,7 +1,7 @@
-import { useState } from 'react'
+
 
 function Layout({ children }) {
-  const [busqueda, setBusqueda] = useState('')
+  
 
   return (
     <div className="flex min-h-screen bg-bg-page">
@@ -11,39 +11,31 @@ function Layout({ children }) {
         
         {/* Logo */}
         <div className="px-4 py-5 border-b border-border">
-          <h2 className="font-bold text-gray-800 text-base">Restaurante</h2>
-          <p className="text-xs text-gray-400">Panel de gestión</p>
+          <h2 className="font-bold text-gray-800 text-base">Restaurant</h2>
+          <p className="text-xs text-gray-400">Administration Panel</p>
         </div>
 
         {/* Navegación */}
         <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
           <a href="/" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary-light text-primary font-medium text-sm">
             <span>🍽️</span>
-            <span>Carta</span>
+            <span>Catalog</span>
           </a>
         </nav>
 
-        {/* Usuario abajo */}
+       
        <div className="px-4 py-4 border-t border-border">
          < p className="text-xs text-gray-400">v1.0.0</p>
       </div>
 
       </div>
 
-      {/* Contenido principal */}
+      {/* Principal content */}
       <div className="flex-1 ml-48 flex flex-col">
 
         {/* TopBar */}
-        <div className="bg-white border-b border-border px-6 py-3 flex items-center justify-between sticky top-0 z-10">
+        <div className="bg-white border-b border-border px-6 py-3 flex items-center justify-end sticky top-0 z-10">
           
-          {/* Buscador */}
-          <input
-            type="text"
-            placeholder="Buscar pedidos, productos..."
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
-            className="w-80 px-4 py-2 bg-gray-50 border border-border-input rounded-lg text-sm text-gray-700 focus:outline-none focus:border-primary"
-          />
 
 {/* Iconos derecha */}
 <div className="flex items-center gap-3">
@@ -80,7 +72,7 @@ function Layout({ children }) {
 
         </div>
 
-        {/* Página actual */}
+        {/* actual page*/}
         <div className="flex-1">
           {children}
         </div>
