@@ -67,11 +67,11 @@ function Login({ onLogin }) {
                         </div>
 
                         <h1 className="text-2xl font-bold text-slate-800">
-                            Restaurant Name
+                            Nombre del restaurante
                         </h1>
 
                         <p className="mt-2 text-sm text-slate-500">
-                            Sign in to continue
+                            Inicia sesión para continuar
                         </p>
 
                     </div>
@@ -91,7 +91,7 @@ function Login({ onLogin }) {
                                 htmlFor="username"
                                 className="block mb-2 text-sm font-semibold text-slate-700"
                             >
-                                Username
+                                Usuario
                             </label>
 
                             <input
@@ -99,7 +99,7 @@ function Login({ onLogin }) {
                                 type="text"
                                 value={username}
                                 onChange={(event) => setUsername(event.target.value)}
-                                placeholder="Enter your username"
+                                placeholder="Ingresa tu usuario"
                                 autoComplete="username"
                                 className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#86BEDA] focus:ring-2 focus:ring-[#86BEDA]/20"
                                 required
@@ -112,7 +112,7 @@ function Login({ onLogin }) {
                                 htmlFor="password"
                                 className="block mb-2 text-sm font-semibold text-slate-700"
                             >
-                                Password
+                                Contraseña
                             </label>
 
                             <div className="relative">
@@ -122,7 +122,7 @@ function Login({ onLogin }) {
                                     type={showPassword ? "text" : "password"}
                                     value={password}
                                     onChange={(event) => setPassword(event.target.value)}
-                                    placeholder="Enter your password"
+                                    placeholder="Ingresa tu contraseña"
                                     autoComplete="current-password"
                                     className="w-full rounded-lg border border-slate-300 px-4 py-3 pr-12 text-sm text-slate-800 outline-none transition focus:border-[#86BEDA] focus:ring-2 focus:ring-[#86BEDA]/20"
                                     required
@@ -133,7 +133,7 @@ function Login({ onLogin }) {
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-500 hover:text-slate-700"
                                 >
-                                    {showPassword ? "Hide" : "Show"}
+                                    {showPassword ? "Hide" : "Ver"}
                                 </button>
 
                             </div>
@@ -145,7 +145,7 @@ function Login({ onLogin }) {
                             disabled={loading}
                             className="w-full rounded-lg bg-[#86BEDA] px-4 py-3 text-sm font-bold text-slate-800 transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-[#86BEDA]/40 disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                            {loading ? "Signing in..." : "Sign in"}
+                            {loading ? "Signing in..." : "Iniciar sesión"}
                         </button>
 
                     </form>

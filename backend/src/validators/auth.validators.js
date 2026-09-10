@@ -21,7 +21,7 @@ const validateLogin = [
 
         if (!errors.isEmpty()) {
             return res.status(400).json({
-                message: "Invalid request data",
+                message: "Datos de solicitud no válidos",
                 errors: errors.array()
             });
         }
